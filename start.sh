@@ -18,5 +18,7 @@ sed -i -e "s/%SNW_MP_PORT_8080_TCP_PORT%/$SNW_MP_PORT_8080_TCP_PORT/g" /tmp/tile
 
 cat /tmp/tilestache/tilestache-cfg.json
 
-tilestache-seed.py -b $BBOX -c /tmp/tilestache/tilestache-cfg.json -l $LAYER_NAME $ZOOM_LEVELS
+#tilestache-seed.py -x -b $BBOX -c /tmp/tilestache/tilestache-cfg.json -l $LAYER_NAME $ZOOM_LEVELS
 
+tilestache-list.py -b $BBOX $ZOOM_LEVELS | split -l 100 - /tmp/list-
+ls -1 /tmp/list-* | xargs -n1 -P8 tilestache-seed.py -x -c /tmp/tilestache/tilestache-cfg.json -l $LAYER_NAME --tile-list
