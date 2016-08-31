@@ -20,5 +20,12 @@ cat /tmp/tilestache/tilestache-cfg.json
 
 #tilestache-seed.py -x -b $BBOX -c /tmp/tilestache/tilestache-cfg.json -l $LAYER_NAME $ZOOM_LEVELS
 
-tilestache-list.py -b $BBOX $ZOOM_LEVELS | split -l 100 - /tmp/list-
-ls -1 /tmp/list-* | xargs -n1 -P8 tilestache-seed.py -x -c /tmp/tilestache/tilestache-cfg.json -l $LAYER_NAME --tile-list
+tilestache-list.py -b $BBOX $ZOOM_LEVELS | split -l 20 - /tmp/list-
+ls -1 /tmp/list-* | xargs -n1 -P8 tilestache-seed.py -x --enable-retries --error-list=/tmp/tile-errors -c /tmp/tilestache/tilestache-cfg.json -l $LAYER_NAME --tile-list
+
+while [ -e /tmp/tile-errors]; do
+    echo "Retrying errors:"
+    cat /tmp/tile-errors
+    mv /tmp/tile-errors /tmp/tile-errors-input
+    tilestache-seed.py -x --enable-retries --error-list=/tmp/tile-errors -c /tmp/tilestache/tilestache-cfg.json -l $LAYER_NAME --tile-list=/tmp/tile-errors-input
+done
