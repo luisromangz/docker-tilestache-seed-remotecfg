@@ -6,7 +6,7 @@ if [ ! -e tilestache.zip ]; then
     exit 1
 fi
 
-unzip tilestache.zip -d /tmp
+unzip tilestache.zip -d /tmp/tilestache
 
 
 sed -i -e "s/%MEMCACHE_PORT_11211_TCP_ADDR%/$MEMCACHE_PORT_11211_TCP_ADDR/g" /tmp/tilestache/tilestache-cfg.json
