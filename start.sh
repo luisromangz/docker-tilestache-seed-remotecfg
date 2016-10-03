@@ -27,5 +27,5 @@ while [ -e /tmp/tile-errors]; do
     echo "Retrying errors:"
     cat /tmp/tile-errors
     mv /tmp/tile-errors /tmp/tile-errors-input
-    tilestache-seed.py -x --enable-retries --error-list=/tmp/tile-errors -c /tmp/tilestache/tilestache-cfg.json -l $LAYER_NAME --tile-list=/tmp/tile-errors-input
+    tilestache-seed.py --enable-retries --error-list=/tmp/tile-errors -c /tmp/tilestache/tilestache-cfg.json -l $LAYER_NAME --tile-list=/tmp/tile-errors-input
 done
